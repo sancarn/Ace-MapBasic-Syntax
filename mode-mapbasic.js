@@ -4,7 +4,7 @@ ace.define("ace/mode/vbscript_highlight_rules",["require","exports","module","ac
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var VBScriptHighlightRules = function() {
+var MapBasicHighlightRules = function() {
 
     var keywordMapper = this.createKeywordMapper({
         "keyword.control.asp":  "For|To|Next|Exit|Do|Loop|While|Wend|If|Then|ElseIf|Case|GoTo|End"
@@ -46,11 +46,18 @@ var VBScriptHighlightRules = function() {
 		"support.constant.asp": "TotalBytes|Buffer|CacheControl|Charset|ContentType|Expires|ExpiresAbsolute"
             + "|IsClientConnected|PICS|Status|ScriptTimeout|CodePage|LCID|SessionID|Timeout",
         
-		"support.function.asp": "Lock|Unlock|SetAbort|SetComplete|BinaryRead|AddHeader|AppendToLog"
-            + "|BinaryWrite|Clear|Flush|Redirect|Write|CreateObject|HTMLEncode|MapPath|URLEncode|Abandon|Convert|Regex",
+		"support.function.asp": "Handler"
+				
+				//VBS
+				//"Lock|Unlock|SetAbort|SetComplete|BinaryRead|AddHeader|AppendToLog"
+				//+ "|BinaryWrite|Clear|Flush|Redirect|Write|CreateObject|HTMLEncode|MapPath|URLEncode|Abandon|Convert|Regex",
         
-		"support.function.event.asp": "Application_OnEnd|Application_OnStart"
-            + "|OnTransactionAbort|OnTransactionCommit|Session_OnEnd|Session_OnStart",
+		"support.function.event.asp": "SelChangedHandler|WinClosedHandler|WinChangedHandler|WinFocusChangedHandler"
+			+ "|RemoteMsgHandler|RemoteQueryHandler|RemoteMapGenHandler|ToolHandler|EndHandler|ForegroundTaskSwitchHandler"
+			//VBS
+			//"Application_OnEnd|Application_OnStart"
+            //+ "|OnTransactionAbort|OnTransactionCommit|Session_OnEnd|Session_OnStart",
+			
         
 		//List of functions/procs/etc from MapBasic Reference using RegEx: "(.*)(function|procedure|statement|clause)"
 		"support.function.vb.asp": "Array|Add|Asc|Atn|CBool|CByte|CCur|CDate|CDbl|Chr|CInt|CLng"
@@ -64,13 +71,15 @@ var VBScriptHighlightRules = function() {
             + "|ScriptEngineMinorVersion|Second|SetLocale|Sgn|Sin|Space|Split|Sqr|StrComp|String|StrReverse"
             + "|Tan|Time|Timer|TimeSerial|TimeValue|TypeName|UBound|UCase|Unescape|VarType|Weekday|WeekdayName|Year",
         
-		"support.type.vb.asp": "vbtrue|vbfalse|vbcr|vbcrlf|vbformfeed|vblf|vbnewline|vbnullchar|vbnullstring|"
-            + "int32|vbtab|vbverticaltab|vbbinarycompare|vbtextcomparevbsunday|vbmonday|vbtuesday|vbwednesday"
-            + "|vbthursday|vbfriday|vbsaturday|vbusesystemdayofweek|vbfirstjan1|vbfirstfourdays|vbfirstfullweek"
-            + "|vbgeneraldate|vblongdate|vbshortdate|vblongtime|vbshorttime|vbobjecterror|vbEmpty|vbNull|vbInteger"
-            + "|vbLong|vbSingle|vbDouble|vbCurrency|vbDate|vbString|vbObject|vbError|vbBoolean|vbVariant"
-            + "|vbDataObject|vbDecimal|vbByte|vbArray"
+		"support.type.vb.asp": "SmallInt|Integer|Float|String|Logical|Date|Object|Alias|Pen|Brush"
 			
+			//VBS
+			// "support.type.vb.asp": "vbtrue|vbfalse|vbcr|vbcrlf|vbformfeed|vblf|vbnewline|vbnullchar|vbnullstring|"
+            // + "int32|vbtab|vbverticaltab|vbbinarycompare|vbtextcomparevbsunday|vbmonday|vbtuesday|vbwednesday"
+            // + "|vbthursday|vbfriday|vbsaturday|vbusesystemdayofweek|vbfirstjan1|vbfirstfourdays|vbfirstfullweek"
+            // + "|vbgeneraldate|vblongdate|vbshortdate|vblongtime|vbshorttime|vbobjecterror|vbEmpty|vbNull|vbInteger"
+            // + "|vbLong|vbSingle|vbDouble|vbCurrency|vbDate|vbString|vbObject|vbError|vbBoolean|vbVariant"
+            // + "|vbDataObject|vbDecimal|vbByte|vbArray"
 			
     }, "identifier", true);
 
@@ -103,17 +112,31 @@ var VBScriptHighlightRules = function() {
                 "variable.parameter.function.asp",
                 "punctuation.definition.parameters.asp"
             ],
-            regex: "^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_]\\w*)(\\s*)(\\()([^)]*)(\\))"
+			regex: "^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(\\s*)(\\()([^)]*)(\\))"
+            //MB (ASSUMED!)
+			// ^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(\\s*)(\\()([^)]*)(\\))
+			//VBS
+			// regex: "^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_]\\w*)(\\s*)(\\()([^)]*)(\\))"
         },
         {
             token: "punctuation.definition.comment.asp",
-            regex: "'|REM(?=\\s|$)",
-            next: "comment",
+            regex: "'",
+				//MB
+				//'
+				//VBS
+				//"'|REM(?=\\s|$)",
+				
+			next: "comment",
             caseInsensitive: true
         },
         {
             token: "storage.type.asp",
-            regex: "On Error Resume Next|On Error GoTo",
+            regex: "OnError GoTo",
+				//MB
+				//OnError GoTo {label | 0}
+				//VBS
+				//regex: "On Error Resume Next|On Error GoTo",
+				
             caseInsensitive: true
         },
         {
@@ -125,11 +148,19 @@ var VBScriptHighlightRules = function() {
             token: [
                 "punctuation.definition.variable.asp"
             ],
-            regex: "(\\$)[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b\\s*"
+            regex: "[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*"	//Innacurately allows a@a as a variable name
+				//MB
+				//[a-zA-Z_~\x80-\xFF][0-9@&%$#!\x0C\x09a-zA-Z_~\x80-\xFF]*
+				//VBS
+				//regex: "(\\$)[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b\\s*"
         },
         {
             token: "constant.numeric.asp",
-            regex: "-?\\b(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\\.?[0-9]*)|(?:\\.[0-9]+))(?:(?:e|E)(?:\\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f)?\\b"
+            regex: "-?(?:(?:\\&[Hh][0-9a-fA-F]*)|\\b(?:(?:[0-9]+\\.?[0-9]*)|(?:\\.[0-9]+))(?:(?:e|E)(?:\\+|-)?[0-9]+)?)\\b"
+				//MB (Examples: "1","1.1",".1","&h1A", "1E10", "1E-10")
+				//-?(?:(?:\&[Hh][0-9a-fA-F]*)|\b(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)\b
+				//VBS
+				//regex: "-?\\b(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\\.?[0-9]*)|(?:\\.[0-9]+))(?:(?:e|E)(?:\\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f)?\\b"
         },
         {
             regex: "\\w+",
@@ -137,11 +168,20 @@ var VBScriptHighlightRules = function() {
         },
         {
             token: ["entity.name.function.asp"],
-            regex: "(?:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)(?=\\(\\)?))"
+            regex: "(?:([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(?=\\(\\)?))"	//Assumed
+				//MB
+				//[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*\(\)
+				//VBS
+				//regex: "(?:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)(?=\\(\\)?))"
         },
         {
             token: ["keyword.operator.asp"],
-            regex: "\\-|\\+|\\*\\/|\\>|\\<|\\=|\\&"
+            regex: "\\-|\\+|\\*|\\/|\\>|\\<|\\=|\\&(?!h[0-9a-fA-F]*\\b)"
+				//MB (surpress error where hex value)
+				// \-|\+|\*|\/|\>|\<|\=|\&(?!h[0-9a-fA-F]*\b)
+				//VBS
+				//regex: "\\-|\\+|\\*\\/|\\>|\\<|\\=|\\&"
+			
         }
     ],
     "state_3": [
@@ -180,7 +220,11 @@ var VBScriptHighlightRules = function() {
     "comment": [
         {
             token: "comment.line.apostrophe.asp",
-            regex: "$|(?=(?:%>))",
+            regex: "$",
+			
+			//VBS
+			//regex: "$|(?=(?:%>))",
+			
             next: "start"
         },
         {
