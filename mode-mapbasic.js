@@ -1,66 +1,32 @@
-ace.define("ace/mode/vbscript_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
+ace.define("ace/mode/MapBasic_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
 var MapBasicHighlightRules = function() {
-
+	//Issues:
+	// Currently "punctuation.definition.variable.asp"  Innacurately allows "a@a" as a variable name.
+	//CONSTANTS ($REPLACE_CONSTANTS$)
+	// There are many constants in MapBasic and the list goes on and on but all require MapBasic.DEF. Do we include? - Probably
+	// Might be best to create on the fly from MapBasic.DEF etc. --- REGEX: "Define\s+\b(\w*)\b" return "$1"
+	
+	//List of functions/procs/etc from MapBasic Reference using RegEx: "(.*)(function|procedure|statement|clause)"
     var keywordMapper = this.createKeywordMapper({
         "keyword.control.asp":  "For|To|Next|Exit|Do|Loop|While|Wend|If|Then|ElseIf|Case|GoTo|End"
-			+ "End Program|Terminate Application|End MapInfo|OnError|Resume|Function|Sub",
-            
-			//VBS - keword.control.asp
-			//"If|Then|Else|ElseIf|End|While|Wend|For|To|Each|Case|Select|Return"
-			//+ "|Continue|Do|Until|Loop|Next|With|Exit|Function|Property|Type|Enum|Sub|IIf",
-			
+			+ "|End Program|Terminate Application|End MapInfo|OnError|Resume|Function|Sub",
         "storage.type.asp": "Dim|Call|Define|Declare|Redim|Randomize|Type",
-		
-			//VBS - storage.type.asp
-			//"Dim|Call|Class|Const|Dim|Redim|Set|Let|Get|New|Randomize|Option|Explicit"
-		
         "storage.modifier.asp": "",
-		
-			//VBS - storage.modifier.asp
-			//"Private|Public|Default"
-		
         "keyword.operator.asp": "Mod|And|Not|Or|as|Contains|Part|Entire|Within|Partly|Entirely|Intersects",
-		
-			//VBS - keyword.operator.asp
-			//"Mod|And|Not|Or|Xor|as"
-		
-		//CONSTANTS
-		// There are many constants in MapBasic and the list goes on and on but all require MapBasic.DEF. Do we include? - Probably
-		// Might be best to create on the fly from MapBasic.DEF etc. --- REGEX: "Define\s+\b(\w*)\b" return "$1"
         "constant.language.asp": "$REPLACE_CONSTANTS$",
-		
-			//VBS - constant.language.asp
-			//"Empty|False|Nothing|Null|True"
-		
         "support.class.asp": "",
-			//VBS - support.class.asp
-			//"Application|ObjectContext|Request|Response|Server|Session"
-			
-        "support.class.collection.asp": "Contents|StaticObjects|ClientCertificate|Cookies|Form|QueryString|ServerVariables",
+        "support.class.collection.asp": "",
+        "support.constant.asp": "",
+        "support.function.asp": "Handler",
+        "support.function.event.asp": "SelChangedHandler|WinClosedHandler|WinChangedHandler|WinFocusChangedHandler"
+            + "|RemoteMsgHandler|RemoteQueryHandler|RemoteMapGenHandler|ToolHandler|EndHandler|ForegroundTaskSwitchHandler"
         
-		"support.constant.asp": "TotalBytes|Buffer|CacheControl|Charset|ContentType|Expires|ExpiresAbsolute"
-            + "|IsClientConnected|PICS|Status|ScriptTimeout|CodePage|LCID|SessionID|Timeout",
-        
-		"support.function.asp": "Handler"
-				
-				//VBS
-				//"Lock|Unlock|SetAbort|SetComplete|BinaryRead|AddHeader|AppendToLog"
-				//+ "|BinaryWrite|Clear|Flush|Redirect|Write|CreateObject|HTMLEncode|MapPath|URLEncode|Abandon|Convert|Regex",
-        
-		"support.function.event.asp": "SelChangedHandler|WinClosedHandler|WinChangedHandler|WinFocusChangedHandler"
-			+ "|RemoteMsgHandler|RemoteQueryHandler|RemoteMapGenHandler|ToolHandler|EndHandler|ForegroundTaskSwitchHandler"
-			//VBS
-			//"Application_OnEnd|Application_OnStart"
-            //+ "|OnTransactionAbort|OnTransactionCommit|Session_OnEnd|Session_OnStart",
-			
-        
-		//List of functions/procs/etc from MapBasic Reference using RegEx: "(.*)(function|procedure|statement|clause)"
-		"support.function.vb.asp": "Array|Add|Asc|Atn|CBool|CByte|CCur|CDate|CDbl|Chr|CInt|CLng"
+        "support.function.vb.asp": "Array|Add|Asc|Atn|CBool|CByte|CCur|CDate|CDbl|Chr|CInt|CLng"
             + "|Conversions|Cos|CreateObject|CSng|CStr|Date|DateAdd|DateDiff|DatePart|DateSerial"
             + "|DateValue|Day|Derived|Math|Escape|Eval|Exists|Exp|Filter|FormatCurrency"
             + "|FormatDateTime|FormatNumber|FormatPercent|GetLocale|GetObject|GetRef|Hex"
@@ -71,16 +37,7 @@ var MapBasicHighlightRules = function() {
             + "|ScriptEngineMinorVersion|Second|SetLocale|Sgn|Sin|Space|Split|Sqr|StrComp|String|StrReverse"
             + "|Tan|Time|Timer|TimeSerial|TimeValue|TypeName|UBound|UCase|Unescape|VarType|Weekday|WeekdayName|Year",
         
-		"support.type.vb.asp": "SmallInt|Integer|Float|String|Logical|Date|Object|Alias|Pen|Brush"
-			
-			//VBS
-			// "support.type.vb.asp": "vbtrue|vbfalse|vbcr|vbcrlf|vbformfeed|vblf|vbnewline|vbnullchar|vbnullstring|"
-            // + "int32|vbtab|vbverticaltab|vbbinarycompare|vbtextcomparevbsunday|vbmonday|vbtuesday|vbwednesday"
-            // + "|vbthursday|vbfriday|vbsaturday|vbusesystemdayofweek|vbfirstjan1|vbfirstfourdays|vbfirstfullweek"
-            // + "|vbgeneraldate|vblongdate|vbshortdate|vblongtime|vbshorttime|vbobjecterror|vbEmpty|vbNull|vbInteger"
-            // + "|vbLong|vbSingle|vbDouble|vbCurrency|vbDate|vbString|vbObject|vbError|vbBoolean|vbVariant"
-            // + "|vbDataObject|vbDecimal|vbByte|vbArray"
-			
+        "support.type.vb.asp": "SmallInt|Integer|Float|String|Logical|Date|Object|Alias|Pen|Brush"
     }, "identifier", true);
 
     this.$rules = {
@@ -112,31 +69,17 @@ var MapBasicHighlightRules = function() {
                 "variable.parameter.function.asp",
                 "punctuation.definition.parameters.asp"
             ],
-			regex: "^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(\\s*)(\\()([^)]*)(\\))"
-            //MB (ASSUMED!)
-			// ^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(\\s*)(\\()([^)]*)(\\))
-			//VBS
-			// regex: "^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_]\\w*)(\\s*)(\\()([^)]*)(\\))"
+	    regex: "^(\\s*)(Function|Sub)(\\s+)([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(\\s*)(\\()([^)]*)(\\))"
         },
         {
             token: "punctuation.definition.comment.asp",
-            regex: "'",
-				//MB
-				//'
-				//VBS
-				//"'|REM(?=\\s|$)",
-				
-			next: "comment",
+            regex: "'",	
+            next: "comment",
             caseInsensitive: true
         },
         {
             token: "storage.type.asp",
-            regex: "OnError GoTo",
-				//MB
-				//OnError GoTo {label | 0}
-				//VBS
-				//regex: "On Error Resume Next|On Error GoTo",
-				
+            regex: "OnError GoTo",				
             caseInsensitive: true
         },
         {
@@ -148,19 +91,11 @@ var MapBasicHighlightRules = function() {
             token: [
                 "punctuation.definition.variable.asp"
             ],
-            regex: "[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*"	//Innacurately allows a@a as a variable name
-				//MB
-				//[a-zA-Z_~\x80-\xFF][0-9@&%$#!\x0C\x09a-zA-Z_~\x80-\xFF]*
-				//VBS
-				//regex: "(\\$)[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b\\s*"
+            regex: "[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*"
         },
         {
             token: "constant.numeric.asp",
             regex: "-?(?:(?:\\&[Hh][0-9a-fA-F]*)|\\b(?:(?:[0-9]+\\.?[0-9]*)|(?:\\.[0-9]+))(?:(?:e|E)(?:\\+|-)?[0-9]+)?)\\b"
-				//MB (Examples: "1","1.1",".1","&h1A", "1E10", "1E-10")
-				//-?(?:(?:\&[Hh][0-9a-fA-F]*)|\b(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)\b
-				//VBS
-				//regex: "-?\\b(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\\.?[0-9]*)|(?:\\.[0-9]+))(?:(?:e|E)(?:\\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f)?\\b"
         },
         {
             regex: "\\w+",
@@ -168,20 +103,11 @@ var MapBasicHighlightRules = function() {
         },
         {
             token: ["entity.name.function.asp"],
-            regex: "(?:([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(?=\\(\\)?))"	//Assumed
-				//MB
-				//[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*\(\)
-				//VBS
-				//regex: "(?:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)(?=\\(\\)?))"
+            regex: "(?:([a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*)(?=\\(\\)?))"
         },
         {
             token: ["keyword.operator.asp"],
             regex: "\\-|\\+|\\*|\\/|\\>|\\<|\\=|\\&(?!h[0-9a-fA-F]*\\b)"
-				//MB (surpress error where hex value)
-				// \-|\+|\*|\/|\>|\<|\=|\&(?!h[0-9a-fA-F]*\b)
-				//VBS
-				//regex: "\\-|\\+|\\*\\/|\\>|\\<|\\=|\\&"
-			
         }
     ],
     "state_3": [
@@ -221,10 +147,6 @@ var MapBasicHighlightRules = function() {
         {
             token: "comment.line.apostrophe.asp",
             regex: "$",
-			
-			//VBS
-			//regex: "$|(?=(?:%>))",
-			
             next: "start"
         },
         {
@@ -249,20 +171,20 @@ var MapBasicHighlightRules = function() {
 
 };
 
-oop.inherits(VBScriptHighlightRules, TextHighlightRules);
+oop.inherits(MapBasicHighlightRules, TextHighlightRules);
 
-exports.VBScriptHighlightRules = VBScriptHighlightRules;
+exports.MapBasicHighlightRules = MapBasicHighlightRules;
 });
 
-ace.define("ace/mode/vbscript",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/vbscript_highlight_rules"], function(require, exports, module) {
+ace.define("ace/mode/mapbasic",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/mapbasic_highlight_rules"], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
-var VBScriptHighlightRules = require("./vbscript_highlight_rules").VBScriptHighlightRules;
+var MapBasicHighlightRules = require("./mapbasic_highlight_rules").MBScriptHighlightRules;
 
 var Mode = function() {
-    this.HighlightRules = VBScriptHighlightRules;
+    this.HighlightRules = MapBasicHighlightRules;
 };
 oop.inherits(Mode, TextMode);
 
@@ -270,7 +192,7 @@ oop.inherits(Mode, TextMode);
        
     this.lineCommentStart = ["'", "REM"];
     
-    this.$id = "ace/mode/vbscript";
+    this.$id = "ace/mode/mapbasic";
 }).call(Mode.prototype);
 
 exports.Mode = Mode;
