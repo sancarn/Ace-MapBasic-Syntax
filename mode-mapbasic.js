@@ -8,7 +8,7 @@ var MapBasicHighlightRules = function() {
 	//Issues:
 	// Currently "punctuation.definition.variable.asp"  Innacurately allows "a@a" as a variable name.
 	//CONSTANTS ($REPLACE_CONSTANTS$)
-	// There are many constants in MapBasic and the list goes on and on but all require MapBasic.DEF. Do we include? - Probably
+	// There areF many constants in MapBasic and the list goes on and on but all require MapBasic.DEF. Do we include? - Probably
 	// Might be best to create on the fly from MapBasic.DEF etc. --- REGEX: "Define\s+\b(\w*)\b" return "$1"
 	
 	//List of functions/procs/etc from MapBasic Reference using RegEx: "(.*)(function|procedure|statement|clause)"
@@ -35,8 +35,9 @@ var MapBasicHighlightRules = function() {
             + "|RGB|Right|Rnd|Round|ScriptEngine|ScriptEngineBuildVersion|ScriptEngineMajorVersion"
             + "|ScriptEngineMinorVersion|Second|SetLocale|Sgn|Sin|Space|Split|Sqr|StrComp|String|StrReverse"
             + "|Tan|Time|Timer|TimeSerial|TimeValue|TypeName|UBound|UCase|Unescape|VarType|Weekday|WeekdayName|Year",
+        
         "support.type.vb.asp": "SmallInt|Integer|Float|String|Logical|Date|Object|Alias|Pen|Brush"
-    }, "identifier", true);
+    },"identifier",true);
 
     this.$rules = {
     "start": [
@@ -85,19 +86,16 @@ var MapBasicHighlightRules = function() {
             regex: '"',
             next: "string"
         },
-        {
-            token: [
-                "punctuation.definition.variable.asp"
-            ],
-            regex: "[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*"
-        },
+//Only useful in seperate system.
+//        {
+//            token: [
+//                "punctuation.definition.variable.asp"
+//            ],
+//            regex: "[a-zA-Z_~\\x80-\\xFF][0-9@&%$#!\\x0C\\x09a-zA-Z_~\\x80-\\xFF]*"
+//        },
         {
             token: "constant.numeric.asp",
             regex: "-?(?:(?:\\&[Hh][0-9a-fA-F]*)|\\b(?:(?:[0-9]+\\.?[0-9]*)|(?:\\.[0-9]+))(?:(?:e|E)(?:\\+|-)?[0-9]+)?)\\b"
-        },
-        {
-            regex: "\\w+",
-            token: keywordMapper
         },
         {
             token: ["entity.name.function.asp"],
@@ -106,6 +104,10 @@ var MapBasicHighlightRules = function() {
         {
             token: ["keyword.operator.asp"],
             regex: "\\-|\\+|\\*|\\/|\\>|\\<|\\=|\\&(?!h[0-9a-fA-F]*\\b)"
+        },
+        {
+            regex: "\\w+",
+            token: keywordMapper
         }
     ],
     "state_3": [
@@ -172,26 +174,4 @@ var MapBasicHighlightRules = function() {
 oop.inherits(MapBasicHighlightRules, TextHighlightRules);
 
 exports.MapBasicHighlightRules = MapBasicHighlightRules;
-});
-
-ace.define("ace/mode/mapbasic",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/MapBasic_highlight_rules"], function(require, exports, module) {
-"use strict";
-
-var oop = require("../lib/oop");
-var TextMode = require("./text").Mode;
-var MapBasicHighlightRules = require("./MapBasic_highlight_rules").MapBasicHighlightRules;
-
-var Mode = function() {
-    this.HighlightRules = MapBasicHighlightRules;
-};
-oop.inherits(Mode, TextMode);
-
-(function() {
-       
-    this.lineCommentStart = ["'", "REM"];
-    
-    this.$id = "ace/mode/mapbasic";
-}).call(Mode.prototype);
-
-exports.Mode = Mode;
 });
