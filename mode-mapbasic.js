@@ -24,8 +24,7 @@ var MapBasicHighlightRules = function() {
         "support.constant.asp": "",
         "support.function.asp": "Handler",
         "support.function.event.asp": "SelChangedHandler|WinClosedHandler|WinChangedHandler|WinFocusChangedHandler"
-            + "|RemoteMsgHandler|RemoteQueryHandler|RemoteMapGenHandler|ToolHandler|EndHandler|ForegroundTaskSwitchHandler"
-        
+            + "|RemoteMsgHandler|RemoteQueryHandler|RemoteMapGenHandler|ToolHandler|EndHandler|ForegroundTaskSwitchHandler",   
         "support.function.vb.asp": "Array|Add|Asc|Atn|CBool|CByte|CCur|CDate|CDbl|Chr|CInt|CLng"
             + "|Conversions|Cos|CreateObject|CSng|CStr|Date|DateAdd|DateDiff|DatePart|DateSerial"
             + "|DateValue|Day|Derived|Math|Escape|Eval|Exists|Exp|Filter|FormatCurrency"
@@ -36,7 +35,6 @@ var MapBasicHighlightRules = function() {
             + "|RGB|Right|Rnd|Round|ScriptEngine|ScriptEngineBuildVersion|ScriptEngineMajorVersion"
             + "|ScriptEngineMinorVersion|Second|SetLocale|Sgn|Sin|Space|Split|Sqr|StrComp|String|StrReverse"
             + "|Tan|Time|Timer|TimeSerial|TimeValue|TypeName|UBound|UCase|Unescape|VarType|Weekday|WeekdayName|Year",
-        
         "support.type.vb.asp": "SmallInt|Integer|Float|String|Logical|Date|Object|Alias|Pen|Brush"
     }, "identifier", true);
 
@@ -176,12 +174,12 @@ oop.inherits(MapBasicHighlightRules, TextHighlightRules);
 exports.MapBasicHighlightRules = MapBasicHighlightRules;
 });
 
-ace.define("ace/mode/mapbasic",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/mapbasic_highlight_rules"], function(require, exports, module) {
+ace.define("ace/mode/mapbasic",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/MapBasic_highlight_rules"], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
-var MapBasicHighlightRules = require("./mapbasic_highlight_rules").MBScriptHighlightRules;
+var MapBasicHighlightRules = require("./MapBasic_highlight_rules").MapBasicHighlightRules;
 
 var Mode = function() {
     this.HighlightRules = MapBasicHighlightRules;
